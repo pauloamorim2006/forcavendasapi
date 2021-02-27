@@ -1,3 +1,3 @@
 # Força de Vendas - API
 
-API do Força de Vendas utilzando ASP NET Core utilizando os princípios do SOLID
+Modelo de API do Força de Vendas utilizando ASP NET Core e SQL Server utilizando os princípios do SOLID
