@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/26/2020 21:37:13" ReportInfo.Modified="08/03/2020 18:39:29" ReportInfo.CreatorVersion="2020.3.0.0">
+  <Styles Name="Gray">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="Gainsboro" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="Gainsboro" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <BusinessObjectDataSource Name="Pedidos" ReferenceName="Pedidos" DataType="null" Enabled="true">
+      <Column Name="Id" DataType="System.Guid"/>
+      <Column Name="Status" DataType="System.Int32"/>
+      <Column Name="ClienteId" DataType="System.Guid"/>
+      <Column Name="Data" DataType="System.DateTime"/>
+      <Column Name="CondicaoPagamentoId" DataType="System.Guid"/>
+      <Column Name="FormaPagamentoId" DataType="System.Guid"/>
+      <Column Name="Codigo" DataType="System.Int32"/>
+      <Column Name="ClienteNome" DataType="System.String"/>
+      <Column Name="ValorTotal" DataType="System.Decimal"/>
+      <Column Name="StatusDescricao" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="FILTRO" DataType="System.String"/>
+    <Total Name="Total" Expression="[Pedidos.ValorTotal]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="47.25">
+      <TextObject Name="Text1" Top="4.35" Width="718.2" Height="18.9" Text="Relatório de Pedidos" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+      <TextObject Name="Text11" Left="-9450" Top="-9450" Width="103.95" Height="18.9" Fill.Color="Gainsboro" Text="Emissão" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text18" Left="2.45" Top="28.35" Width="718.2" Height="18.9" Text="Filtro: [FILTRO]" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="51.25" Width="718.2" Height="19.35">
+      <TextObject Name="Text3" Width="66.15" Height="18.9" Fill.Color="Gainsboro" Text="Código" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text9" Left="66.15" Width="122.85" Height="18.9" Fill.Color="Gainsboro" Text="Emissão" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text12" Left="292.95" Width="302.4" Height="18.9" Fill.Color="Gainsboro" Text="Cliente" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text13" Left="595.35" Top="0.45" Width="122.85" Height="18.9" Fill.Color="Gainsboro" Text="Valor Total" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text19" Left="189" Width="103.95" Height="18.9" Fill.Color="Gainsboro" Text="Situação" Font="Arial, 10pt, style=Bold" Style="Header"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.6" Width="718.2" Height="18.9" EvenStyle="EvenRows" DataSource="Pedidos">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Text="[Pedidos.Codigo]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text8" Left="66.15" Width="122.85" Height="18.9" Text="[Pedidos.Data]" Format="Date" Format.Format="d" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text14" Left="292.95" Width="302.4" Height="18.9" Text="[Pedidos.ClienteNome]" Font="Arial, 10pt"/>
+      <TextObject Name="Text15" Left="595.35" Width="122.85" Height="18.9" Text="[Pedidos.ValorTotal]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="189" Width="103.95" Height="18.9" Text="[Pedidos.StatusDescricao]" Font="Arial, 10pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="97.5" Width="718.2" Height="18.9">
+      <TextObject Name="Text16" Left="595.35" Width="122.85" Height="18.9" Text="[Total]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 10pt"/>
+      <TextObject Name="Text17" Left="491.4" Width="94.5" Height="18.9" Text="Total:" Font="Arial, 10pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="120.4" Width="718.2" Height="18.9">
+      <TextObject Name="Text10" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="Gainsboro" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
