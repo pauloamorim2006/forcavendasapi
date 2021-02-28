@@ -6,7 +6,6 @@ Modelo de API de um Força de Vendas utilizando ASP.NET Core WebAPI e SQL Server
 
 O sistema realiza o controle de pedidos de venda. 
 Atende de forma simples diversas situações e serve como base para desenvolvimento de diversas regras.
-Possui autenticação através de JWT.
 
 # Recursos:
 
@@ -18,8 +17,10 @@ Possui autenticação através de JWT.
 * Forma de Pagamento
 * Pedido
 
-# Recursos Utilizados:
+# Tecnologias:
 
+* ASP.NET Core WebAPI 3.1
+* SQL Server
 * Entity Framework Core
 * Identity
 * Swagger
