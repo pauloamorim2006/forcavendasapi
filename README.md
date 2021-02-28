@@ -32,6 +32,14 @@ Atende de forma simples diversas situações e serve como base para desenvolvime
 * XUnit
 * LINQKit
 
+# Testes:
+
+* Foram desenvolvidos diversos testes unitários para os Services dos projetos
+
+# Autorização
+
+* O fonte pode ser utilizado em quaquer projeto, o único pedido é que cite esse github como fonte caso seja utilizado
+
 # Observação:
 
 É um sistema incompleto, que serve somente para estudos de desenvovimento. Não nos responsabilizamos pela sua utilização, como também não garantimos as funcionalidades desenvolvidas. Ressaltamos que todos os pedidos devem ser faturados em um sistema fiscal após a geração.
