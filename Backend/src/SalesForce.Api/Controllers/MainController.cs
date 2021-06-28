@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using ERP.Business.Intefaces;
 using ERP.Business.Notificacoes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SalesForce.Api.Helpers;
+using SalesForce.Api.Services;
+using SalesForce.Api.Wrappers;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 
 namespace ERP.Api.Controllers
 {
@@ -12,16 +19,23 @@ namespace ERP.Api.Controllers
     {
         private readonly INotificador _notificador;
         public readonly IUser AppUser;
+        private readonly IMapper _mapper;
+        private readonly IUriService _uriService;
 
         protected Guid UsuarioId { get; set; }
         protected bool UsuarioAutenticado { get; set; }
 
-        protected MainController(INotificador notificador, 
+        protected MainController(
+                                 IMapper mapper,
+                                 IUriService uriService,
+                                 INotificador notificador, 
                                  IUser appUser)
         {
             _notificador = notificador;
+            _mapper = mapper;
+            _uriService = uriService;
             AppUser = appUser;
-
+            
             if (appUser.IsAuthenticated())
             {
                 UsuarioId = appUser.GetUserId();
@@ -72,5 +86,18 @@ namespace ERP.Api.Controllers
         {
             _notificador.Handle(new Notificacao(mensagem));
         }
+
+        protected PagedResponse<List<ViewModel>> ResponseHandler<Model, ViewModel>(ResponseModel<Model> response, PaginationFilter filter)
+        {
+            var data = _mapper.Map<IEnumerable<ViewModel>>(response.Data);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<ViewModel>(
+                data.ToList(), 
+                new PaginationFilter(filter.PageNumber, filter.PageSize), 
+                response.Total, 
+                _uriService, 
+                Request.Path.Value);
+            return pagedReponse;
+        }
+
     }
 }

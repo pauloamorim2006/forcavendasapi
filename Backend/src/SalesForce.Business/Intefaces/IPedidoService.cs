@@ -1,4 +1,6 @@
 ﻿using ERP.Business.Models;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -16,7 +18,7 @@ namespace ERP.Business.Intefaces
         Task<IEnumerable<Pedido>> Buscar(Expression<Func<Pedido, bool>> predicate);
         Task<Pedido> ObterPorId(Guid id);
         Task<Pedido> Obter(Guid id);
-        Task<List<Pedido>> ObterTodos();
+        Task<ResponseModel<Pedido>> ObterTodos(PaginationFilter filter);
         Task<List<Pedido>> RecuperarTodos(
             DateTime? DataInicial,
             DateTime? DataFinal,

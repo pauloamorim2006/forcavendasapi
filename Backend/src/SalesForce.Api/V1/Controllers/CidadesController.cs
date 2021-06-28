@@ -5,8 +5,14 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Helpers;
+using SalesForce.Api.Services;
+using SalesForce.Api.Wrappers;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ERP.Api.V1.Controllers
@@ -21,18 +27,19 @@ namespace ERP.Api.V1.Controllers
 
         public CidadesController(IMapper mapper,
                                       ICidadeService cidadeService,
+                                      IUriService uriService,
                                       INotificador notificador,
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(mapper, uriService, notificador, user)
         {
             _mapper = mapper;
             _cidadeService = cidadeService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CidadeViewModel>> ObterTodos()
-        {
-            return _mapper.Map<IEnumerable<CidadeViewModel>>(await _cidadeService.ObterTodos());
-        }
+        public async Task<IActionResult> ObterTodos([FromQuery] PaginationFilter filter)
+        {            
+            return Ok(ResponseHandler<Cidade, CidadeViewModel>(await _cidadeService.ObterTodos(filter), filter));
+        }        
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<CidadeViewModel>> ObterPorId(Guid id)

@@ -1,6 +1,8 @@
 ﻿using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using ERP.Business.Models.Validations;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace ERP.Business.Services
             _formaPagamentoRepository = formaPagamentoRepository;
         }
 
+       
         public async Task<bool> Adicionar(FormaPagamento formaPagamento)
         {
             if (!ExecutarValidacao(new FormaPagamentoValidation(), formaPagamento)) return false;
@@ -32,6 +35,7 @@ namespace ERP.Business.Services
             await _formaPagamentoRepository.Adicionar(formaPagamento);
             return true;
         }
+        
         public async Task<bool> Atualizar(FormaPagamento formaPagamento)
         {
             if (!ExecutarValidacao(new FormaPagamentoValidation(), formaPagamento)) return false;
@@ -45,6 +49,7 @@ namespace ERP.Business.Services
             await _formaPagamentoRepository.Atualizar(formaPagamento);
             return true;
         }
+        
         public async Task<bool> Remover(Guid id)
         {
             if (!_formaPagamentoRepository.Encontrou(id))
@@ -56,21 +61,25 @@ namespace ERP.Business.Services
             await _formaPagamentoRepository.Remover(id);
             return true;
         }
+        
         public async Task<IEnumerable<FormaPagamento>> Buscar(Expression<Func<FormaPagamento, bool>> predicate)
         {
             return await _formaPagamentoRepository.Buscar(predicate);
         }
+        
         public async Task<FormaPagamento> ObterPorId(Guid id)
         {
             return await _formaPagamentoRepository.ObterPorId(id);
         }
+        
         public async Task<FormaPagamento> Obter(Guid id)
         {
             return await _formaPagamentoRepository.Obter(id);
         }
-        public async Task<List<FormaPagamento>> ObterTodos()
+        
+        public async Task<ResponseModel<FormaPagamento>> ObterTodos(PaginationFilter filter)
         {
-            return await _formaPagamentoRepository.ObterTodos();
+            return await _formaPagamentoRepository.ObterTodos(filter);
         }
 
         public void Dispose()

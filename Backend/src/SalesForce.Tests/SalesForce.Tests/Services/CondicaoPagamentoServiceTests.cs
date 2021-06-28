@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -185,15 +188,16 @@ namespace ERP.Business.Tests.Services
         public async void CondicaoPagamentoService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _condicaoPagamentoTestsAutoMockerFixture.Mocker.GetMock<ICondicaoPagamentoRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_condicaoPagamentoTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _condicaoPagamentoTestsAutoMockerFixture.Mocker.GetMock<ICondicaoPagamentoRepository>().Setup(c => c.ObterTodos(filtro))
+                .Returns(Task.FromResult(new ResponseModel<CondicaoPagamento>(_condicaoPagamentoTestsAutoMockerFixture.ObterVariados().ToList(), 1000)));
 
             // Act
-            var list = await _condicaoPagamentoService.ObterTodos();
+            var list = await _condicaoPagamentoService.ObterTodos(filtro);
 
             // Assert 
-            _condicaoPagamentoTestsAutoMockerFixture.Mocker.GetMock<ICondicaoPagamentoRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _condicaoPagamentoTestsAutoMockerFixture.Mocker.GetMock<ICondicaoPagamentoRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos
 

@@ -8,6 +8,7 @@ using FastReport.Export.PdfSimple;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +28,9 @@ namespace ERP.Api.V1.Controllers
         public PedidosController(IMapper mapper,
                                       IPedidoService pedidoService,
                                       INotificador notificador,
+                                      IUriService uriService,
                                       IUser user,
-                                      IWebHostEnvironment env) : base(notificador, user)
+                                      IWebHostEnvironment env) : base(mapper, uriService, notificador, user)
         {
             _mapper = mapper;
             _pedidoService = pedidoService;

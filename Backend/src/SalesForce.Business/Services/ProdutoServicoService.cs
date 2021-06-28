@@ -1,6 +1,8 @@
 ﻿using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using ERP.Business.Models.Validations;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,13 +69,13 @@ namespace ERP.Business.Services
         {
             return await _produtoServicoRepository.Obter(id);
         }
-        public async Task<List<ProdutoServico>> ObterTodos()
+        public async Task<ResponseModel<ProdutoServico>> ObterTodos(PaginationFilter filter)
         {
-            return await _produtoServicoRepository.ObterTodos();
+            return await _produtoServicoRepository.ObterTodos(filter);
         }
-        public async Task<List<ProdutoServico>> RecuperarTodos()
+        public async Task<ResponseModel<ProdutoServico>> RecuperarTodos(PaginationFilter filter)
         {
-            return await _produtoServicoRepository.RecuperarTodos();
+            return await _produtoServicoRepository.RecuperarTodos(filter);
         }
         public async Task<int> RecuperarQuantidade()
         {

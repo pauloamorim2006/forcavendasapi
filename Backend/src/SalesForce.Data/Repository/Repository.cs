@@ -7,6 +7,8 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using ERP.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 
 namespace ERP.Data.Repository
 {
@@ -36,9 +38,14 @@ namespace ERP.Data.Repository
             return await DbSet.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public virtual async Task<List<TEntity>> ObterTodos()
+        public virtual async Task<ResponseModel<TEntity>> ObterTodos(PaginationFilter filter)
         {
-            return await DbSet.ToListAsync();
+            var data = await DbSet.
+                Skip((filter.PageNumber - 1) * filter.PageSize).
+                Take(filter.PageSize).
+                ToListAsync();
+            var count = await DbSet.CountAsync();
+            return new ResponseModel<TEntity>(data, count);
         }
 
         public virtual async Task Adicionar(TEntity entity)

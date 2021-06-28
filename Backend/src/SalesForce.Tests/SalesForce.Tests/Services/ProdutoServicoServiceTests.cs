@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -192,15 +195,16 @@ namespace ERP.Business.Tests.Services
         public async void ProdutoServicoService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_produtoServicoTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<ProdutoServico>(_produtoServicoTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _produtoServicoService.ObterTodos();
+            var list = await _produtoServicoService.ObterTodos(filtro);
 
             // Assert 
-            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos        
 
@@ -267,15 +271,16 @@ namespace ERP.Business.Tests.Services
         public async void ProdutoServicoService_RecuperarTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Setup(c => c.RecuperarTodos())
-                .Returns(Task.FromResult(_produtoServicoTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _ = _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Setup(c => c.RecuperarTodos(filtro))
+                .ReturnsAsync(new ResponseModel<ProdutoServico>(_produtoServicoTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _produtoServicoService.RecuperarTodos();
+            var list = await _produtoServicoService.RecuperarTodos(filtro);
 
             // Assert 
-            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Verify(r => r.RecuperarTodos(), Times.Once);
-            Assert.True(list.Any());
+            _produtoServicoTestsAutoMockerFixture.Mocker.GetMock<IProdutoServicoRepository>().Verify(r => r.RecuperarTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Recuperar Todos  
 

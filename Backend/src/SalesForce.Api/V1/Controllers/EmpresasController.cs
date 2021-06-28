@@ -5,6 +5,7 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Services;
 using System.Threading.Tasks;
 
 namespace ERP.Api.V1.Controllers
@@ -19,8 +20,9 @@ namespace ERP.Api.V1.Controllers
 
         public EmpresasController(IEmpresaService empresaService,
                                       IMapper mapper,
+                                      IUriService uriService,
                                       INotificador notificador,
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(mapper, uriService, notificador, user)
         {
             _empresaService = empresaService;
             _mapper = mapper;

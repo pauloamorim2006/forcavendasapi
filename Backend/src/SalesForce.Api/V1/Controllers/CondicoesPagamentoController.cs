@@ -5,6 +5,8 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Services;
+using SalesForce.Business.Filter;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,17 +23,18 @@ namespace ERP.Api.V1.Controllers
 
         public CondicoesPagamentoController(IMapper mapper,
                                       ICondicaoPagamentoService condicaoPagamentoService,
+                                      IUriService uriService,
                                       INotificador notificador,
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(mapper, uriService, notificador, user)
         {
             _mapper = mapper;
             _condicaoPagamentoService = condicaoPagamentoService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CondicaoPagamentoViewModel>> ObterTodos()
+        public async Task<IActionResult> ObterTodos([FromQuery] PaginationFilter filter)
         {
-            return _mapper.Map<IEnumerable<CondicaoPagamentoViewModel>>(await _condicaoPagamentoService.ObterTodos());
+            return Ok(ResponseHandler<CondicaoPagamento, CondicaoPagamentoViewModel>(await _condicaoPagamentoService.ObterTodos(filter), filter));
         }
 
         [HttpGet("{id:guid}")]

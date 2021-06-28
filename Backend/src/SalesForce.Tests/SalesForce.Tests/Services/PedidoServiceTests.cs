@@ -3,6 +3,8 @@ using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,15 +176,16 @@ namespace ERP.Business.Tests.Services
         public async void PedidoService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _pedidoTestsAutoMockerFixture.Mocker.GetMock<IPedidoRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_pedidoTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _pedidoTestsAutoMockerFixture.Mocker.GetMock<IPedidoRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<Pedido>(_pedidoTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _pedidoService.ObterTodos();
+            var list = await _pedidoService.ObterTodos(filtro);
 
             // Assert 
-            _pedidoTestsAutoMockerFixture.Mocker.GetMock<IPedidoRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _pedidoTestsAutoMockerFixture.Mocker.GetMock<IPedidoRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos
 

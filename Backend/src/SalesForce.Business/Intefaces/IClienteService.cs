@@ -1,4 +1,6 @@
 ﻿using ERP.Business.Models;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -11,11 +13,11 @@ namespace ERP.Business.Intefaces
         Task<IEnumerable<Cliente>> Buscar(Expression<Func<Cliente, bool>> predicate);
         Task<Cliente> ObterPorId(Guid id);
         Task<Cliente> Obter(Guid id);
-        Task<List<Cliente>> ObterTodos();
+        Task<ResponseModel<Cliente>> ObterTodos(PaginationFilter filter);
         Task<bool> Adicionar(Cliente cliente);
         Task<bool> Atualizar(Cliente cliente);
         Task<bool> Remover(Guid id);
-        Task<List<Cliente>> RecuperarTodos();
+        Task<ResponseModel<Cliente>> RecuperarTodos(PaginationFilter filter);
         Task<int> RecuperarQuantidade();
     }
 }

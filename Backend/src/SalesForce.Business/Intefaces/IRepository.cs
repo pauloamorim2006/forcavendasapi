@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ERP.Business.Models;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 
 namespace ERP.Business.Intefaces
 {
@@ -11,7 +13,7 @@ namespace ERP.Business.Intefaces
         Task Adicionar(TEntity entity);
         Task<TEntity> ObterPorId(Guid id);
         Task<TEntity> Obter(Guid id);
-        Task<List<TEntity>> ObterTodos();
+        Task<ResponseModel<TEntity>> ObterTodos(PaginationFilter filter);
         Task Atualizar(TEntity entity);
         Task Remover(Guid id);
         Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate);

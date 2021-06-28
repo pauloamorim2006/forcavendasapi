@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -185,15 +188,16 @@ namespace ERP.Business.Tests.Services
         public async void ClienteService_RecuperarTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Setup(c => c.RecuperarTodos())
-                .Returns(Task.FromResult(_clienteTestsAutoMockerFixture.ObterClientesVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Setup(c => c.RecuperarTodos(filtro))
+                .ReturnsAsync(new ResponseModel<Cliente>(_clienteTestsAutoMockerFixture.ObterClientesVariados().ToList(), 1000));
 
             // Act
-            var clientes = await _clienteService.RecuperarTodos();
+            var clientes = await _clienteService.RecuperarTodos(filtro);
 
             // Assert 
-            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Verify(r => r.RecuperarTodos(), Times.Once);
-            Assert.True(clientes.Any());
+            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Verify(r => r.RecuperarTodos(filtro), Times.Once);
+            Assert.True(clientes.Data.Any());
         }
         #endregion Recuperar Todos
 
@@ -203,15 +207,16 @@ namespace ERP.Business.Tests.Services
         public async void ClienteService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_clienteTestsAutoMockerFixture.ObterClientesVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<Cliente>(_clienteTestsAutoMockerFixture.ObterClientesVariados().ToList(), 1000));
 
             // Act
-            var clientes = await _clienteService.ObterTodos();
+            var clientes = await _clienteService.ObterTodos(filtro);
 
             // Assert 
-            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(clientes.Any());
+            _clienteTestsAutoMockerFixture.Mocker.GetMock<IClienteRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(clientes.Data.Any());
         }
         #endregion Obter Todos
 

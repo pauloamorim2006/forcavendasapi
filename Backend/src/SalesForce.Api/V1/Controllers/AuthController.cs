@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using ERP.Api.Controllers;
 using ERP.Api.Extensions;
 using ERP.Api.ViewModels;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SalesForce.Api.Services;
 
 namespace ERP.Api.V1.Controllers
 {
@@ -29,7 +31,10 @@ namespace ERP.Api.V1.Controllers
                               SignInManager<IdentityUser> signInManager, 
                               UserManager<IdentityUser> userManager, 
                               IOptions<AppSettings> appSettings,
-                              IUser user, ILogger<AcessosController> logger) : base(notificador, user)
+                              IMapper mapper,
+                              IUriService uriService,
+                              IUser user, 
+                              ILogger<AcessosController> logger) : base(mapper, uriService, notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;

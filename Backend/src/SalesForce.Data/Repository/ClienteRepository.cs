@@ -2,6 +2,8 @@
 using ERP.Business.Models;
 using ERP.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +18,17 @@ namespace ERP.Data.Repository
         {
             return await Db.Clientes.AsNoTracking().CountAsync();
         }
-        public async Task<List<Cliente>> RecuperarTodos()
+        public async Task<ResponseModel<Cliente>> RecuperarTodos(PaginationFilter filter)
         {
-            return await Db.Clientes
+            var data = await Db.Clientes
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
                 .Include(x => x.Cidade)
                 .AsNoTracking()
                 .ToListAsync();
+            var count = await Db.Clientes.CountAsync();
+            return new ResponseModel<Cliente>(data, count);
+
         }
         public bool JaExisteCliente(Guid id, string cnpjCpfDi)
         {

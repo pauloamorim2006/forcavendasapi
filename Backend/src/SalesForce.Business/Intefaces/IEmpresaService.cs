@@ -1,8 +1,9 @@
 ﻿using ERP.Business.Models;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ERP.Business.Intefaces
@@ -15,7 +16,7 @@ namespace ERP.Business.Intefaces
         Task<IEnumerable<Empresa>> Buscar(Expression<Func<Empresa, bool>> predicate);
         Task<Empresa> ObterPorId(Guid id);
         Task<Empresa> Obter(Guid id);
-        Task<List<Empresa>> ObterTodos();
+        Task<ResponseModel<Empresa>> ObterTodos(PaginationFilter filter);
         Task<Empresa> Buscar();
     }
 }

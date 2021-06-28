@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -185,15 +188,16 @@ namespace ERP.Business.Tests.Services
         public async void CidadeService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _cidadeTestsAutoMockerFixture.Mocker.GetMock<ICidadeRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_cidadeTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _cidadeTestsAutoMockerFixture.Mocker.GetMock<ICidadeRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<Cidade>(_cidadeTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _cidadeService.ObterTodos();
+            var list = await _cidadeService.ObterTodos(filtro);
 
             // Assert 
-            _cidadeTestsAutoMockerFixture.Mocker.GetMock<ICidadeRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _cidadeTestsAutoMockerFixture.Mocker.GetMock<ICidadeRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos
 

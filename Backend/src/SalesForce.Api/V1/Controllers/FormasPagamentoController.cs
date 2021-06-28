@@ -5,6 +5,8 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Services;
+using SalesForce.Business.Filter;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,17 +23,18 @@ namespace ERP.Api.V1.Controllers
 
         public FormasPagamentoController(IMapper mapper,
                                       IFormaPagamentoService formaPagamentoService,
+                                      IUriService uriService,
                                       INotificador notificador,
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(mapper, uriService, notificador, user)
         {
             _mapper = mapper;
             _formaPagamentoService = formaPagamentoService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<FormaPagamentoViewModel>> ObterTodos()
+        public async Task<IActionResult> ObterTodos([FromQuery] PaginationFilter filter)
         {
-            return _mapper.Map<IEnumerable<FormaPagamentoViewModel>>(await _formaPagamentoService.ObterTodos());
+            return Ok(ResponseHandler<FormaPagamento, FormaPagamentoViewModel>(await _formaPagamentoService.ObterTodos(filter), filter));
         }
 
         [HttpGet("{id:guid}")]

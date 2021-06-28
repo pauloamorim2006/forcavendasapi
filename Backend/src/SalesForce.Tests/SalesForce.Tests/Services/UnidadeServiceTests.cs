@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -192,15 +195,16 @@ namespace ERP.Business.Tests.Services
         public async void UnidadeService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _unidadeTestsAutoMockerFixture.Mocker.GetMock<IUnidadeRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_unidadeTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _unidadeTestsAutoMockerFixture.Mocker.GetMock<IUnidadeRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<Unidade>(_unidadeTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _unidadeService.ObterTodos();
+            var list = await _unidadeService.ObterTodos(filtro);
 
             // Assert 
-            _unidadeTestsAutoMockerFixture.Mocker.GetMock<IUnidadeRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _unidadeTestsAutoMockerFixture.Mocker.GetMock<IUnidadeRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos
 

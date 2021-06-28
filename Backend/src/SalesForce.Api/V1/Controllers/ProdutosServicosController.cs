@@ -5,6 +5,8 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SalesForce.Api.Services;
+using SalesForce.Business.Filter;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,17 +23,18 @@ namespace ERP.Api.V1.Controllers
 
         public ProdutosServicosController(IMapper mapper,
                                       IProdutoServicoService produtoServicoService,
+                                      IUriService uriService,
                                       INotificador notificador,
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(mapper, uriService, notificador, user)
         {
             _mapper = mapper;
             _produtoServicoService = produtoServicoService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProdutoServicoViewModel>> ObterTodos()
-        {
-            return _mapper.Map<IEnumerable<ProdutoServicoViewModel>>(await _produtoServicoService.RecuperarTodos());
+        public async Task<IActionResult> ObterTodos([FromQuery] PaginationFilter filter)
+        {            
+            return Ok(ResponseHandler<ProdutoServico, ProdutoServicoViewModel>(await _produtoServicoService.ObterTodos(filter), filter));
         }
 
         [HttpGet("{id:guid}")]

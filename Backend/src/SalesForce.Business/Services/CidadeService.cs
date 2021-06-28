@@ -1,6 +1,8 @@
 ﻿using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using ERP.Business.Models.Validations;
+using SalesForce.Business.Filter;
+using SalesForce.Business.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,7 @@ namespace ERP.Business.Services
             await _cidadeRepository.Adicionar(cidade);
             return true;
         }
+        
         public async Task<bool> Atualizar(Cidade cidade)
         {
             if (!ExecutarValidacao(new CidadeValidation(), cidade)) return false;
@@ -43,6 +46,7 @@ namespace ERP.Business.Services
             await _cidadeRepository.Atualizar(cidade);
             return true;
         }
+        
         public async Task<bool> Remover(Guid id)
         {
             if (!_cidadeRepository.Encontrou(id))
@@ -53,22 +57,25 @@ namespace ERP.Business.Services
             await _cidadeRepository.Remover(id);
             return true;
         }
+        
         public async Task<IEnumerable<Cidade>> Buscar(Expression<Func<Cidade, bool>> predicate)
         {
             return await _cidadeRepository.Buscar(predicate);
         }
+        
         public async Task<Cidade> ObterPorId(Guid id)
         {
             return await _cidadeRepository.ObterPorId(id);
         }
+        
         public async Task<Cidade> Obter(Guid id)
         {
             return await _cidadeRepository.Obter(id);
         }
-        public async Task<List<Cidade>> ObterTodos()
-        {
-            var cidades = await _cidadeRepository.ObterTodos();
-            return cidades.OrderBy(x => x.Descricao).ToList();
+        
+        public async Task<ResponseModel<Cidade>> ObterTodos(PaginationFilter filter)
+        {            
+            return await _cidadeRepository.ObterTodos(filter);
         }
 
         public void Dispose()

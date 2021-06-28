@@ -1,7 +1,10 @@
 ﻿using ERP.Business.Intefaces;
+using ERP.Business.Models;
 using ERP.Business.Services;
 using ERP.Business.Tests.Providers;
 using Moq;
+using SalesForce.Business.Responses;
+using SalesForce.Business.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -192,15 +195,16 @@ namespace ERP.Business.Tests.Services
         public async void FormaPagamentoService_ObterTodos_DeveExecutarComSucesso()
         {
             // Arrange
-            _formaPagamentoTestsAutoMockerFixture.Mocker.GetMock<IFormaPagamentoRepository>().Setup(c => c.ObterTodos())
-                .Returns(Task.FromResult(_formaPagamentoTestsAutoMockerFixture.ObterVariados().ToList()));
+            var filtro = HelpersDefault.GerarFiltro();
+            _formaPagamentoTestsAutoMockerFixture.Mocker.GetMock<IFormaPagamentoRepository>().Setup(c => c.ObterTodos(filtro))
+                .ReturnsAsync(new ResponseModel<FormaPagamento>(_formaPagamentoTestsAutoMockerFixture.ObterVariados().ToList(), 1000));
 
             // Act
-            var list = await _formaPagamentoService.ObterTodos();
+            var list = await _formaPagamentoService.ObterTodos(filtro);
 
             // Assert 
-            _formaPagamentoTestsAutoMockerFixture.Mocker.GetMock<IFormaPagamentoRepository>().Verify(r => r.ObterTodos(), Times.Once);
-            Assert.True(list.Any());
+            _formaPagamentoTestsAutoMockerFixture.Mocker.GetMock<IFormaPagamentoRepository>().Verify(r => r.ObterTodos(filtro), Times.Once);
+            Assert.True(list.Data.Any());
         }
         #endregion Obter Todos
 
