@@ -9,6 +9,8 @@ using ERP.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using SalesForce.Business.Filter;
 using SalesForce.Business.Responses;
+using SalesForce.Data.Cache;
+using System.Reflection;
 
 namespace ERP.Data.Repository
 {
@@ -16,11 +18,13 @@ namespace ERP.Data.Repository
     {
         protected readonly SalesForceDbContext Db;
         protected readonly DbSet<TEntity> DbSet;
+        protected readonly ICache Cache;
 
-        protected Repository(SalesForceDbContext db)
+        protected Repository(SalesForceDbContext db, ICache cache)
         {
             Db = db;
             DbSet = db.Set<TEntity>();
+            Cache = cache;
         }
 
         public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
@@ -40,12 +44,21 @@ namespace ERP.Data.Repository
 
         public virtual async Task<ResponseModel<TEntity>> ObterTodos(PaginationFilter filter)
         {
-            var data = await DbSet.
-                Skip((filter.PageNumber - 1) * filter.PageSize).
-                Take(filter.PageSize).
-                ToListAsync();
-            var count = await DbSet.CountAsync();
-            return new ResponseModel<TEntity>(data, count);
+            var list = await Cache.GetListAsync<TEntity>(MethodBase.GetCurrentMethod().Name);
+            if (list.Count() <= 0)
+            {
+                var data = await DbSet.
+                    Skip((filter.PageNumber - 1) * filter.PageSize).
+                    Take(filter.PageSize).
+                    ToListAsync();
+                var count = await DbSet.CountAsync();
+
+                await Cache.SetListAsync<Entity>(MethodBase.GetCurrentMethod().Name, data);
+
+                return new ResponseModel<TEntity>(data, count);
+            }
+
+            return new ResponseModel<TEntity>(list, list.Count());
         }
 
         public virtual async Task Adicionar(TEntity entity)

@@ -7,6 +7,8 @@ using ERP.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SalesForce.Api.Services;
+using SalesForce.Data.Cache;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ERP.Api.Configuration
@@ -34,6 +36,8 @@ namespace ERP.Api.Configuration
             services.AddScoped<ICondicaoPagamentoService, CondicaoPagamentoService>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IPedidoService, PedidoService>();
+
+            services.AddScoped<ICache, Cache>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();

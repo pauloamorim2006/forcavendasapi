@@ -5,12 +5,13 @@ using ERP.Business.Intefaces;
 using ERP.Business.Models;
 using ERP.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using SalesForce.Data.Cache;
 
 namespace ERP.Data.Repository
 {
     public class EmpresaRepository : Repository<Empresa>, IEmpresaRepository
     {
-        public EmpresaRepository(SalesForceDbContext context) : base(context) { }
+        public EmpresaRepository(SalesForceDbContext context, ICache cache) : base(context, cache) { }
 
         public async Task<Empresa> Buscar()
         {

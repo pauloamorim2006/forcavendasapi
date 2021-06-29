@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SalesForce.Api.Configuration;
 
 namespace ERP.Api
 {
@@ -41,6 +42,8 @@ namespace ERP.Api
             services.AddIdentityConfig(Configuration);
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.CacheConfiguration(Configuration);
 
             services.AddApiConfig();
 

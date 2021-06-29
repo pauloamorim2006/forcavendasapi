@@ -1,9 +1,11 @@
 ﻿using ERP.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SalesForce.Api.Services;
 
 namespace ERP.Api.Configuration
 {
@@ -11,6 +13,14 @@ namespace ERP.Api.Configuration
     {
         public static IServiceCollection AddApiConfig(this IServiceCollection services)
         {
+            services.AddSingleton<IUriService>(o =>
+            {
+                var accessor = o.GetRequiredService<IHttpContextAccessor>();
+                var request = accessor.HttpContext.Request;
+                var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(uri);
+            });
+
             services.AddControllers();
 
             services.AddApiVersioning(options =>

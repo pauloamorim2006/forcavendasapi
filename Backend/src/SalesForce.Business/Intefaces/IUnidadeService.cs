@@ -14,7 +14,7 @@ namespace ERP.Business.Intefaces
         Task<Unidade> ObterPorId(Guid id);
         Task<Unidade> Obter(Guid id);
         Task<ResponseModel<Unidade>> ObterTodos(PaginationFilter filter);
-        Task<List<Unidade>> RecuperarTodos();
+        Task<ResponseModel<Unidade>> RecuperarTodos(PaginationFilter filter);
         Task<bool> Adicionar(Unidade unidade);
         Task<bool> Atualizar(Unidade unidade);
         Task<bool> Remover(Guid id);

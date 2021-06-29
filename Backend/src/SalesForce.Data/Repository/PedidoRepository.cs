@@ -7,12 +7,13 @@ using ERP.Business.Models;
 using ERP.Data.Context;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using SalesForce.Data.Cache;
 
 namespace ERP.Data.Repository
 {
     public class PedidoRepository : Repository<Pedido>, IPedidoRepository
     {
-        public PedidoRepository(SalesForceDbContext context) : base(context) { }
+        public PedidoRepository(SalesForceDbContext context, ICache cache) : base(context, cache) { }
 
         public async Task<int> RecuperarQuantidade()
         {

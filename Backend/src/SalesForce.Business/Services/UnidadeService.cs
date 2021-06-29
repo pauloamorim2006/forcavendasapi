@@ -81,9 +81,9 @@ namespace ERP.Business.Services
             return await _unidadeRepository.ObterTodos(filter);
         }
 
-        public async Task<List<Unidade>> RecuperarTodos()
+        public async Task<ResponseModel<Unidade>> RecuperarTodos(PaginationFilter filter)
         {
-            return await _unidadeRepository.RecuperarTodos();
+            return await _unidadeRepository.RecuperarTodos(filter);
         }
 
         public void Dispose()
