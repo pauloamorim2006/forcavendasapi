@@ -16,6 +16,7 @@ Atende de forma simples diversas situações e serve como base para desenvolvime
 * Condição de Pagamento
 * Forma de Pagamento
 * Pedido
+* Paginação
 
 # Tecnologias:
 
