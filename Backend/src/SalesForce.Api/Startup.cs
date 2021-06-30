@@ -1,7 +1,3 @@
-using KissLog;
-using KissLog.AspNetCore;
-using KissLog.CloudListeners.Auth;
-using KissLog.CloudListeners.RequestLogsListener;
 using AutoMapper;
 using ERP.Api.Configuration;
 using ERP.Data.Context;
@@ -55,12 +51,14 @@ namespace ERP.Api
 
             services.AddSwaggerConfig();
 
+            services.HealthCheckConfiguration(Configuration);
+
             services.ResolveDependencies();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
-            app.UseApiConfig(env, Configuration);
+            app.UseApiConfig(env, Configuration);            
 
             app.UseSwaggerConfig(provider);
         }

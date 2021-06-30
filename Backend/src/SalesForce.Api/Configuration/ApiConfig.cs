@@ -1,7 +1,4 @@
 ﻿using ERP.Api.Extensions;
-using KissLog.AspNetCore;
-using KissLog.CloudListeners.Auth;
-using KissLog.CloudListeners.RequestLogsListener;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SalesForce.Api.Configuration;
 using SalesForce.Api.Services;
-using System;
-using System.Diagnostics;
-using System.Text;
 
 namespace ERP.Api.Configuration
 {
@@ -101,6 +95,8 @@ namespace ERP.Api.Configuration
             {
                 endpoints.MapControllers();               
             });
+
+            app.HealthCheckConfigure(Configuration);
         }
     }
 }
