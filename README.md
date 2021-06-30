@@ -21,6 +21,7 @@ Atende de forma simples diversas situações e serve como base para desenvolvime
 * Paginação
 * Cache
 * Logger(Kisslog)
+* Health Check
 
 # Tecnologias:
 
