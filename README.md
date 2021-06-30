@@ -20,6 +20,7 @@ Atende de forma simples diversas situações e serve como base para desenvolvime
 # Extras:
 * Paginação
 * Cache
+* Logger(Kisslog)
 
 # Tecnologias:
 
@@ -35,7 +36,8 @@ Atende de forma simples diversas situações e serve como base para desenvolvime
 * MOQ
 * XUnit
 * LINQKit
-* Redis
+* Redis (Distributed Cache)
+* Kisslog
 
 # Testes:
 
