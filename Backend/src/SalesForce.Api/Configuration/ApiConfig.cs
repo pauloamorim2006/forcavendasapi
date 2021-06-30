@@ -1,17 +1,25 @@
 ﻿using ERP.Api.Extensions;
+using KissLog.AspNetCore;
+using KissLog.CloudListeners.Auth;
+using KissLog.CloudListeners.RequestLogsListener;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SalesForce.Api.Configuration;
 using SalesForce.Api.Services;
+using System;
+using System.Diagnostics;
+using System.Text;
 
 namespace ERP.Api.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection AddApiConfig(this IServiceCollection services)
+        public static void AddApiConfig(this IServiceCollection services)
         {
             services.AddSingleton<IUriService>(o =>
             {
@@ -61,10 +69,9 @@ namespace ERP.Api.Configuration
                             .AllowAnyHeader());
             });
 
-            return services;
         }
 
-        public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static void UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env, IConfiguration Configuration)
         {
             if (env.IsDevelopment())
             {
@@ -86,14 +93,14 @@ namespace ERP.Api.Configuration
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.LoggerConfigure(Configuration);
+
             app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();               
             });
-
-            return app;
         }
     }
 }

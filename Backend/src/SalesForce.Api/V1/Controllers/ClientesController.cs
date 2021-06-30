@@ -34,7 +34,8 @@ namespace ERP.Api.V1.Controllers
         [HttpGet]
         public async Task<IActionResult> ObterTodos([FromQuery] PaginationFilter filter)
         {
-            return Ok(ResponseHandler<Cliente, ClienteViewModel>(await _clienteService.ObterTodos(filter), filter));            
+            var response = await _clienteService.ObterTodos(filter);
+            return Ok(ResponseHandler<Cliente, ClienteViewModel>(response, filter));            
         }
 
         [HttpGet("{id:guid}")]
