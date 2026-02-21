@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SalesForce.Api.Configuration
@@ -7,7 +7,7 @@ namespace SalesForce.Api.Configuration
     {
         public static void CacheConfiguration(this IServiceCollection services, IConfiguration Configuration)
         {
-            services.AddDistributedRedisCache(options =>
+            services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration =
                     Configuration.GetConnectionString("DefaultConnectionCache");

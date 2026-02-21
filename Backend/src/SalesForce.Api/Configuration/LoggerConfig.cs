@@ -1,4 +1,4 @@
-﻿using KissLog;
+using KissLog;
 using KissLog.AspNetCore;
 using KissLog.CloudListeners.Auth;
 using KissLog.CloudListeners.RequestLogsListener;
@@ -15,14 +15,28 @@ namespace SalesForce.Api.Configuration
     {
         public static void LoggerConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<ILogger>((context) =>
+            services.AddScoped<IKLogger>((context) =>
             {
                 return Logger.Factory.Get();
             });
 
             services.AddLogging(logging =>
             {
-                logging.AddKissLog();
+                logging.AddKissLog(options =>
+                {
+                    options.Formatter = (FormatterArgs args) =>
+                    {
+                        if (args.Exception == null)
+                            return args.DefaultValue;
+
+                        string exceptionStr = new StringBuilder()
+                            .AppendLine(args.DefaultValue)
+                            .AppendLine(args.Exception.ToString())
+                            .ToString();
+
+                        return exceptionStr;
+                    };
+                });
             });
         }
 

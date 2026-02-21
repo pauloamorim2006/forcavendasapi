@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ERP.Api.Controllers;
 using ERP.Api.ViewModels;
 using ERP.Business.Intefaces;
@@ -8,6 +8,7 @@ using FastReport.Export.PdfSimple;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using SalesForce.Api.Services;
 using System;
 using System.Collections.Generic;

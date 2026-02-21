@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace SalesForce.Data.Migrations
 {
     [DbContext(typeof(SalesForceDbContext))]
@@ -15,10 +17,12 @@ namespace SalesForce.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:.PedidoSequencia", "'PedidoSequencia', '', '1', '1', '', '', 'Int32', 'False'")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.HasSequence<int>("PedidoSequencia");
 
             modelBuilder.Entity("ERP.Business.Models.Cidade", b =>
                 {
@@ -31,17 +35,17 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Uf")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(2);
+                        .HasMaxLength(2)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cidades");
+                    b.ToTable("Cidades", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Cliente", b =>
@@ -55,8 +59,8 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Bairro")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Cep")
                         .HasColumnType("varchar(100)");
@@ -79,21 +83,21 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("InscricaoEstadual")
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Telefone")
                         .HasColumnType("varchar(100)");
@@ -109,7 +113,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasIndex("CidadeId");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.CondicaoPagamento", b =>
@@ -127,7 +131,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CondicoesPagamento");
+                    b.ToTable("CondicoesPagamento", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Empresa", b =>
@@ -141,8 +145,8 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Bairro")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Cep")
                         .HasColumnType("varchar(100)");
@@ -165,26 +169,26 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Fantasia")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("InscricaoEstadual")
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(60);
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Padrao")
                         .HasColumnType("bit");
@@ -203,7 +207,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasIndex("CidadeId");
 
-                    b.ToTable("Empresas");
+                    b.ToTable("Empresas", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.FormaPagamento", b =>
@@ -237,7 +241,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FormasPagamento");
+                    b.ToTable("FormasPagamento", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Pedido", b =>
@@ -274,7 +278,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasIndex("FormaPagamentoId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.PedidoItem", b =>
@@ -313,7 +317,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("PedidosItens");
+                    b.ToTable("PedidosItens", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.ProdutoServico", b =>
@@ -333,8 +337,8 @@ namespace SalesForce.Data.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("PermiteFracionar")
                         .HasColumnType("bit");
@@ -349,7 +353,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasIndex("UnidadeId");
 
-                    b.ToTable("ProdutosServicos");
+                    b.ToTable("ProdutosServicos", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Unidade", b =>
@@ -368,7 +372,7 @@ namespace SalesForce.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Unidades");
+                    b.ToTable("Unidades", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Cliente", b =>
@@ -378,6 +382,8 @@ namespace SalesForce.Data.Migrations
                         .HasForeignKey("CidadeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Cidade");
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Empresa", b =>
@@ -387,6 +393,8 @@ namespace SalesForce.Data.Migrations
                         .HasForeignKey("CidadeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Cidade");
                 });
 
             modelBuilder.Entity("ERP.Business.Models.Pedido", b =>
@@ -408,6 +416,12 @@ namespace SalesForce.Data.Migrations
                         .HasForeignKey("FormaPagamentoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("CondicaoPagamento");
+
+                    b.Navigation("FormaPagamento");
                 });
 
             modelBuilder.Entity("ERP.Business.Models.PedidoItem", b =>
@@ -423,6 +437,10 @@ namespace SalesForce.Data.Migrations
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Pedido");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("ERP.Business.Models.ProdutoServico", b =>
@@ -432,6 +450,13 @@ namespace SalesForce.Data.Migrations
                         .HasForeignKey("UnidadeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Unidade");
+                });
+
+            modelBuilder.Entity("ERP.Business.Models.Pedido", b =>
+                {
+                    b.Navigation("PedidoItens");
                 });
 #pragma warning restore 612, 618
         }

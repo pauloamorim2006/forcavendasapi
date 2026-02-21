@@ -1,4 +1,4 @@
-﻿using ERP.Api.Extensions;
+using ERP.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SalesForce.Api.Configuration;
 using SalesForce.Api.Services;
+using Asp.Versioning;
 
 namespace ERP.Api.Configuration
 {
@@ -30,9 +31,8 @@ namespace ERP.Api.Configuration
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
-            });
-
-            services.AddVersionedApiExplorer(options =>
+            })
+            .AddApiExplorer(options =>
             {
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
@@ -57,10 +57,10 @@ namespace ERP.Api.Configuration
                 options.AddPolicy("Production",
                     builder =>
                         builder
-                            .WithMethods("GET")
-                            .SetIsOriginAllowedToAllowWildcardSubdomains()
-                            //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
-                            .AllowAnyHeader());
+                        .WithMethods("GET")
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                        .AllowAnyHeader());
             });
 
         }
